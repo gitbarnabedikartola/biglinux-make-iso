@@ -1,0 +1,203 @@
+#!/bin/bash
+
+workdir=/home/runner/work/build-iso/build-iso
+
+cd $workdir
+
+# Clean git folder
+rm -R $workdir/iso-profiles/community/biglinux
+
+# Update git
+# if [ ! -d "$workdir/iso-profiles" ]
+# then
+#     git clone https://gitlab.manjaro.org/profiles-and-settings/iso-profiles.git $workdir/iso-profiles
+# else
+#     cd $workdir/iso-profiles
+#     git pull
+#     cd $workdir
+# fi
+
+# Copy profile biglinux to profile folder
+cp -R $workdir/iso-profiles-biglinux $workdir/iso-profiles/community/biglinux
+
+# Remove Mhwd
+if [ -e "$workdir/iso-profiles-biglinux/Mhwd-remove" ]; then
+    grep -v -f $workdir/iso-profiles-biglinux/Mhwd-remove $workdir/iso-profiles/shared/Packages-Mhwd  > $workdir/iso-profiles/community/biglinux/Packages-Mhwd
+else
+    cp -f $workdir/iso-profiles/shared/Packages-Mhwd $workdir/iso-profiles/community/biglinux/Packages-Mhwd
+fi
+
+# Remove Root
+if [ -e "$workdir/iso-profiles-biglinux/Root-remove" ]; then
+    grep -v -f $workdir/iso-profiles-biglinux/Root-remove $workdir/iso-profiles/shared/Packages-Root  > $workdir/iso-profiles/community/biglinux/Packages-Root
+else
+    cp -f $workdir/iso-profiles/shared/Packages-Root $workdir/iso-profiles/community/biglinux/Packages-Root
+fi
+
+# Remove Live
+if [ -e "$workdir/iso-profiles-biglinux/Live-remove" ]; then
+    grep -v -f $workdir/iso-profiles-biglinux/Live-remove $workdir/iso-profiles/shared/Packages-Live  > $workdir/iso-profiles/community/biglinux/Packages-Live
+else
+    cp -f $workdir/iso-profiles/shared/Packages-Live $workdir/iso-profiles/community/biglinux/Packages-Live
+fi
+
+# Remove Desktop
+if [ -e "$workdir/iso-profiles-biglinux/Desktop-remove" ]; then
+    grep -v -f $workdir/iso-profiles-biglinux/Desktop-remove $workdir/iso-profiles/shared/Packages-Desktop  > $workdir/iso-profiles/community/biglinux/Packages-Desktop
+else
+    cp -f $workdir/iso-profiles/shared/Packages-Desktop $workdir/iso-profiles/community/biglinux/Packages-Desktop
+fi
+
+# Add Mhwd
+if [ -e "$workdir/iso-profiles-biglinux/Mhwd-add" ]; then
+    cat $workdir/iso-profiles-biglinux/Mhwd-add >> $workdir/iso-profiles/community/biglinux/Packages-Mhwd
+fi
+
+# Add Root
+if [ -e "$workdir/iso-profiles-biglinux/Root-add" ]; then
+    cat $workdir/iso-profiles-biglinux/Root-add >> $workdir/iso-profiles/community/biglinux/Packages-Root
+fi
+
+# Add Root
+if [ "$3" = "amber" ]; then
+    echo 'mesa-amber
+lib32-mesa-amber' >> $workdir/iso-profiles/community/biglinux/Packages-Root
+fi
+
+# Add Live
+if [ -e "$workdir/iso-profiles-biglinux/Live-add" ]; then
+    echo '' >> $workdir/iso-profiles/community/biglinux/Packages-Live
+    cat $workdir/iso-profiles-biglinux/Live-add >> $workdir/iso-profiles/community/biglinux/Packages-Live
+fi
+
+# Add Desktop
+if [ -e "$workdir/iso-profiles-biglinux/Desktop-add" ]; then
+    cat $workdir/iso-profiles-biglinux/Desktop-add > $workdir/iso-profiles/community/biglinux/Packages-Desktop
+fi
+
+# Add some things from Packages-Desktop
+sed -n '/## Printing/,/^$/p' $workdir/iso-profiles/manjaro/kde/Packages-Desktop >> $workdir/iso-profiles/community/biglinux/Packages-Desktop
+sed -n '/## Xorg Server and Graphics/,/^$/p' $workdir/iso-profiles/manjaro/kde/Packages-Desktop >> $workdir/iso-profiles/community/biglinux/Packages-Desktop
+sed -n '/## Xorg Input Drivers/,/^$/p' $workdir/iso-profiles/manjaro/kde/Packages-Desktop >> $workdir/iso-profiles/community/biglinux/Packages-Desktop
+sed -n '/## Misc/,/^$/p' $workdir/iso-profiles/manjaro/kde/Packages-Desktop >> $workdir/iso-profiles/community/biglinux/Packages-Desktop
+
+sed -i 's|xf86-input-void||g' $workdir/iso-profiles/community/biglinux/Packages-Desktop
+
+
+
+# Change in scripts /usr/lib/manjaro-tools
+rm -Rf $workdir/make-iso-files-tmp
+mkdir -p $workdir/make-iso-files-tmp
+cp -Rf /usr/lib/manjaro-tools $workdir/make-iso-files-tmp/manjaro-tools
+
+# Faster compression
+# sed -i 's|-Xcompression-level 20|-Xcompression-level 6|g' $workdir/make-iso-files-tmp/manjaro-tools/util-iso.sh
+
+# Disable remove pkgs cache
+#grep -B 9999 'find "$1" -name \*.pacnew -name \*.pacsave -name \*.pacorig -delete' /usr/lib/manjaro-tools/util-iso-image.sh > $workdir/make-iso-files-tmp/manjaro-tools/util-iso-image.sh
+
+# Remove files from /usr/share/doc /usr/share/man and some icons to libreoffice
+
+
+# Remove last }
+tac $workdir/make-iso-files-tmp/manjaro-tools/util-iso-image.sh | grep -v -m1 -A 9999 '\}' | tac > $workdir/make-iso-files-tmp/manjaro-tools/util-iso-image2.sh
+mv $workdir/make-iso-files-tmp/manjaro-tools/util-iso-image2.sh $workdir/make-iso-files-tmp/manjaro-tools/util-iso-image.sh
+
+echo '  #BigLinux clean
+        path=$1/usr/share/doc
+        if [[ -d $path ]]; then
+            rm -Rf $path/* &> /dev/null
+        fi
+        
+        #BigLinux clean
+        path=$1/usr/share/man
+        if [[ -d $path ]]; then
+            rm -Rf $path/* &> /dev/null
+        fi
+        
+        #Clean LibreOffice
+        path=$1/usr/lib/libreoffice/share/config
+        if [[ -d $path ]]; then
+        rm -f $path/images_karasa_jaga* &> /dev/null
+        rm -f $path/images_elementary* &> /dev/null
+        rm -f $path/images_sukapura* &> /dev/null
+        rm -f $path/images_colibre_svg.zip &> /dev/null
+        rm -f $path/images_sifr_dark_svg.zip &> /dev/null
+        rm -f $path/images_sifr_svg.zip &> /dev/null
+        rm -f $path/images_breeze_dark_svg.zip &> /dev/null
+        rm -f $path/images_breeze_svg.zip &> /dev/null
+        fi
+
+        #Clean LibreOffice
+        path=$1/usr/share/wallpapers
+        if [[ -d $path ]]; then
+            rm -Rf $path/Altai
+            rm -Rf $path/BytheWater
+            rm -Rf $path/Cascade
+            rm -Rf $path/ColdRipple
+            rm -Rf $path/DarkestHour
+            rm -Rf $path/EveningGlow
+            rm -Rf $path/Flow
+            rm -Rf $path/FlyingKonqui
+            rm -Rf $path/IceCold
+            rm -Rf $path/Kokkini
+            rm -Rf $path/Next
+            rm -Rf $path/Opal
+            rm -Rf $path/Patak
+            rm -Rf $path/SafeLanding
+            rm -Rf $path/summer_1am
+            rm -Rf $path/Autumn
+            rm -Rf $path/Canopee
+            rm -Rf $path/Cluster
+            rm -Rf $path/ColorfulCups
+            rm -Rf $path/Elarun
+            rm -Rf $path/FallenLeaf
+            rm -Rf $path/Fluent
+            rm -Rf $path/Grey
+            rm -Rf $path/Kite
+            rm -Rf $path/MilkyWay
+            rm -Rf $path/OneStandsOut
+            rm -Rf $path/PastelHills
+            rm -Rf $path/Path
+            rm -Rf $path/Shell
+            rm -Rf $path/Volna
+        fi
+
+        }' >> $workdir/make-iso-files-tmp/manjaro-tools/util-iso-image.sh
+
+#grep -A 9999 'find "$1" -name \*.pacnew -name \*.pacsave -name \*.pacorig -delete' /usr/lib/manjaro-tools/util-iso-image.sh | tail -n +2 >> $workdir/make-iso-files-tmp/manjaro-tools/util-iso-image.sh
+
+# Disable remove pkgs cache
+sed -i 's|path=$1/var/lib/pacman/sync|path=$1/usr/share/man|'g $workdir/make-iso-files-tmp/manjaro-tools/util-iso-image.sh
+
+
+# Change in scripts /usr/share/manjaro-tools
+mkdir -p $workdir/make-iso-files-tmp
+cp -Rf /usr/share/manjaro-tools $workdir/make-iso-files-tmp/manjaro-tools-share
+cp -Rf $workdir/iso-profiles/community/biglinux/ $workdir/make-iso-files-tmp/manjaro-tools-share/iso-profiles/shared/biglinux
+
+
+sed -i 's|keyboard keymap|keyboard keymap bootsplash-biglinux|g' $workdir/make-iso-files-tmp/manjaro-tools-share/mkinitcpio.conf
+
+cp -f $workdir/iso-profiles-biglinux/pacman-default.conf $workdir/make-iso-files-tmp/manjaro-tools-share/pacman-default.conf
+
+# /usr/bin/buildiso
+cp -f /usr/bin/buildiso $workdir/make-iso-files-tmp/
+sed -i "s|/usr/lib/manjaro-tools|$workdir/make-iso-files-tmp/manjaro-tools|g"  $workdir/make-iso-files-tmp/buildiso
+sed -i "s|/usr/share/manjaro-tools|$workdir/make-iso-files-tmp/manjaro-tools-share|g"  $workdir/make-iso-files-tmp/buildiso
+
+
+# build iso
+# $workdir/make-iso-files-tmp/buildiso -f -p biglinux -b $2 -k linux${1}
+
+
+# amber para utilizar o mesa-amber
+# biglinux-make-iso 515 stable
+# biglinux-make-iso 515 stable amber
+
+
+# colocar no hooks:
+# kernel
+# branch
+# mesa-amber
+# mesa-git  #faz automato para fazer push do fork auto-AUR with auto-fetch
