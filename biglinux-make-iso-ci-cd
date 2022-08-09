@@ -2,15 +2,18 @@
 
 ## create profile biglinux ##
 mkdir -p iso-profiles/community/biglinux
+ls -lh iso-profiles/community/biglinux
 
 cp iso-profiles-biglinux/profile.conf  iso-profiles/community/biglinux/
+ls -lh iso-profiles/community/biglinux
+
 sed -i '/manjaro2/d' iso-profiles/community/biglinux/profile.conf
+ls -lh iso-profiles/community/biglinux
 
-mkdir -p iso-profiles/community/biglinux/desktop-overlay
-mkdir -p iso-profiles/community/biglinux/live-overlay 
-cp iso-profiles-biglinux/desktop-overlay/*  iso-profiles/community/biglinux/
-cp iso-profiles-biglinux/live-overlay/*  iso-profiles/community/biglinux/
+cp -r iso-profiles-biglinux/desktop-overlay/  iso-profiles/community/biglinux/
+ls -lh iso-profiles/community/biglinux
 
+cp -r iso-profiles-biglinux/live-overlay/  iso-profiles/community/biglinux/
 ls -lh iso-profiles/community/biglinux
 
 # Remove Mhwd
@@ -67,6 +70,14 @@ fi
 if [ -e "$HOME/iso-profiles-biglinux/Desktop-add" ]; then
     cat iso-profiles-biglinux/Desktop-add > iso-profiles/community/biglinux/Packages-Desktop
 fi
+# Add some things from Packages-Desktop
+sed -n '/## Printing/,/^$/p' ~/iso-profiles/manjaro/kde/Packages-Desktop >> ~/iso-profiles/community/biglinux/Packages-Desktop
+sed -n '/## Xorg Server and Graphics/,/^$/p' ~/iso-profiles/manjaro/kde/Packages-Desktop >> ~/iso-profiles/community/biglinux/Packages-Desktop
+sed -n '/## Xorg Input Drivers/,/^$/p' ~/iso-profiles/manjaro/kde/Packages-Desktop >> ~/iso-profiles/community/biglinux/Packages-Desktop
+sed -n '/## Misc/,/^$/p' ~/iso-profiles/manjaro/kde/Packages-Desktop >> ~/iso-profiles/community/biglinux/Packages-Desktop
+
+sed -i 's|xf86-input-void||g' ~/iso-profiles/community/biglinux/Packages-Desktop
+
 
 find -type f -exec sed -i '/xdg-su/d' {} +
 find -type f -exec sed -i '/xorg-utils/d' {} +
