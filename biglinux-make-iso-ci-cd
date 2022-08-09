@@ -16,40 +16,40 @@ cp -r iso-profiles-biglinux/desktop-overlay/  iso-profiles/community/biglinux/
 cp -r iso-profiles-biglinux/live-overlay/  iso-profiles/community/biglinux/
 
 # Remove Mhwd
-if [ -e "$HOME/iso-profiles-biglinux/Mhwd-remove" ]; then
+if [ -e " iso-profiles-biglinux/Mhwd-remove" ]; then
     grep -v -f iso-profiles-biglinux/Mhwd-remove iso-profiles/shared/Packages-Mhwd  > iso-profiles/community/biglinux/Packages-Mhwd
 else
     cp -f iso-profiles/shared/Packages-Mhwd iso-profiles/community/biglinux/Packages-Mhwd
 fi
 
 # Remove Root
-if [ -e "$HOME/iso-profiles-biglinux/Root-remove" ]; then
+if [ -e " iso-profiles-biglinux/Root-remove" ]; then
     grep -v -f iso-profiles-biglinux/Root-remove iso-profiles/shared/Packages-Root  > iso-profiles/community/biglinux/Packages-Root
 else
     cp -f iso-profiles/shared/Packages-Root iso-profiles/community/biglinux/Packages-Root
 fi
 
 # Remove Live
-if [ -e "$HOME/iso-profiles-biglinux/Live-remove" ]; then
+if [ -e " iso-profiles-biglinux/Live-remove" ]; then
     grep -v -f iso-profiles-biglinux/Live-remove iso-profiles/shared/Packages-Live  > iso-profiles/community/biglinux/Packages-Live
 else
     cp -f iso-profiles/shared/Packages-Live iso-profiles/community/biglinux/Packages-Live
 fi
 
 # Remove Desktop
-if [ -e "$HOME/iso-profiles-biglinux/Desktop-remove" ]; then
+if [ -e " iso-profiles-biglinux/Desktop-remove" ]; then
     grep -v -f iso-profiles-biglinux/Desktop-remove iso-profiles/shared/Packages-Desktop  > iso-profiles/community/biglinux/Packages-Desktop
 else
     cp -f iso-profiles/shared/Packages-Desktop iso-profiles/community/biglinux/Packages-Desktop
 fi
 
 # Add Mhwd
-if [ -e "$HOME/iso-profiles-biglinux/Mhwd-add" ]; then
+if [ -e " iso-profiles-biglinux/Mhwd-add" ]; then
     cat iso-profiles-biglinux/Mhwd-add >> iso-profiles/community/biglinux/Packages-Mhwd
 fi
 
 # Add Root
-if [ -e "$HOME/iso-profiles-biglinux/Root-add" ]; then
+if [ -e " iso-profiles-biglinux/Root-add" ]; then
     cat iso-profiles-biglinux/Root-add >> iso-profiles/community/biglinux/Packages-Root
 fi
 
@@ -60,27 +60,27 @@ lib32-mesa-amber' >> iso-profiles/community/biglinux/Packages-Root
 fi
 
 # Add Live
-if [ -e "$HOME/iso-profiles-biglinux/Live-add" ]; then
-    echo '' >> iso-profiles/community/biglinux/Packages-Live
+if [ -e " iso-profiles-biglinux/Live-add" ]; then
+#     echo '' >> iso-profiles/community/biglinux/Packages-Live
     cat iso-profiles-biglinux/Live-add >> iso-profiles/community/biglinux/Packages-Live
 fi
 
 # Add Desktop
-if [ -e "$HOME/iso-profiles-biglinux/Desktop-add" ]; then
+if [ -e " iso-profiles-biglinux/Desktop-add" ]; then
     cat iso-profiles-biglinux/Desktop-add > iso-profiles/community/biglinux/Packages-Desktop
 fi
 # Add some things from Packages-Desktop
-sed -n '/## Printing/,/^$/p' ~/iso-profiles/manjaro/kde/Packages-Desktop >> ~/iso-profiles/community/biglinux/Packages-Desktop
-sed -n '/## Xorg Server and Graphics/,/^$/p' ~/iso-profiles/manjaro/kde/Packages-Desktop >> ~/iso-profiles/community/biglinux/Packages-Desktop
-sed -n '/## Xorg Input Drivers/,/^$/p' ~/iso-profiles/manjaro/kde/Packages-Desktop >> ~/iso-profiles/community/biglinux/Packages-Desktop
-sed -n '/## Misc/,/^$/p' ~/iso-profiles/manjaro/kde/Packages-Desktop >> ~/iso-profiles/community/biglinux/Packages-Desktop
+sed -n '/## Printing/,/^$/p'  iso-profiles/manjaro/kde/Packages-Desktop >>  iso-profiles/community/biglinux/Packages-Desktop
+sed -n '/## Xorg Server and Graphics/,/^$/p'  iso-profiles/manjaro/kde/Packages-Desktop >>  iso-profiles/community/biglinux/Packages-Desktop
+sed -n '/## Xorg Input Drivers/,/^$/p'  iso-profiles/manjaro/kde/Packages-Desktop >>  iso-profiles/community/biglinux/Packages-Desktop
+sed -n '/## Misc/,/^$/p'  iso-profiles/manjaro/kde/Packages-Desktop >>  iso-profiles/community/biglinux/Packages-Desktop
 
-sed -i 's|xf86-input-void||g' ~/iso-profiles/community/biglinux/Packages-Desktop
+sed -i 's|xf86-input-void||g'  iso-profiles/community/biglinux/Packages-Desktop
 
 
-find -type f -exec sed -i '/xdg-su/d' {} +
-find -type f -exec sed -i '/xorg-utils/d' {} +
-find -type f -exec sed -i '/xorg-server-utils/d' {} +
+# find -type f -exec sed -i '/xdg-su/d' {} +
+# find -type f -exec sed -i '/xorg-utils/d' {} +
+# find -type f -exec sed -i '/xorg-server-utils/d' {} +
 
 # Remove last }
 sed -i ':a;$!{N;ba;};s/\(.*\)}/\1/' /usr/lib/manjaro-tools/util-iso-image.sh
