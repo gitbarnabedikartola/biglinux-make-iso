@@ -13,6 +13,8 @@
 
 ## create profile biglinux ##
 mkdir -p iso-profiles/community/biglinux
+cp iso-profiles-biglinux/profile.conf  iso-profiles/community/biglinux/
+
 # Remove Mhwd
 if [ -e "$HOME/iso-profiles-biglinux/Mhwd-remove" ]; then
     grep -v -f iso-profiles-biglinux/Mhwd-remove iso-profiles/shared/Packages-Mhwd  > iso-profiles/community/biglinux/Packages-Mhwd
@@ -66,7 +68,12 @@ fi
 # Add Desktop
 if [ -e "$HOME/iso-profiles-biglinux/Desktop-add" ]; then
     cat iso-profiles-biglinux/Desktop-add > iso-profiles/community/biglinux/Packages-Desktop
+    echo "xdg-su"
+    echo "xorg-server-utils"
+    echo "xorg-utils"
 fi
+
+
 
 ## PAREI AKI ##
 
