@@ -137,12 +137,14 @@ echo '  #BigLinux clean
 sudo sed -i 's|path=$1/var/lib/pacman/sync|path=$1/usr/share/man|'g /usr/lib/manjaro-tools/util-iso-image.sh
 
 # Change in scripts /usr/share/manjaro-tools
-sudo cp -Rf $HOME/iso-profiles/community/biglinux/ /usr/share/manjaro-tools/iso-profiles/shared/biglinux
+sudo mkdir -p /usr/share/manjaro-tools/iso-profiles/shared/biglinux
+sudo cp -Rf iso-profiles/community/biglinux/ /usr/share/manjaro-tools/iso-profiles/shared/biglinux
 
 #bootsplash
 sudo sed -i 's|keyboard keymap|keyboard keymap bootsplash-biglinux|g' /usr/share/manjaro-tools/mkinitcpio.conf
 
 #repo biglinux
-sudo cp -f ~/iso-profiles-biglinux/pacman-default.conf /usr/share/manjaro-tools/pacman-default.conf
+sudo cp -f iso-profiles-biglinux/pacman-default.conf /usr/share/manjaro-tools/pacman-default.conf
 
 
+# buildiso -f -p biglinux -b stable -k linux515
