@@ -6,8 +6,10 @@ mkdir -p iso-profiles/community/biglinux
 cp iso-profiles-biglinux/profile.conf  iso-profiles/community/biglinux/
 sed -i '/manjaro2/d' iso-profiles/community/biglinux/profile.conf
 
-cp -Rf iso-profiles-biglinux/desktop-overlay/  iso-profiles/community/biglinux
-cp -Rf iso-profiles-biglinux/live-overlay/  iso-profiles/community/biglinux
+mkdir -p iso-profiles/community/biglinux/desktop-overlay
+mkdir -p iso-profiles/community/biglinux/live-overlay 
+cp iso-profiles-biglinux/desktop-overlay/*  iso-profiles/community/biglinux/
+cp iso-profiles-biglinux/live-overlay/*  iso-profiles/community/biglinux/
 
 ls -lh iso-profiles/community/biglinux
 
@@ -69,8 +71,6 @@ fi
 find -type f -exec sed -i '/xdg-su/d' {} +
 find -type f -exec sed -i '/xorg-utils/d' {} +
 find -type f -exec sed -i '/xorg-server-utils/d' {} +
-
-ls -lh iso-profiles/community/biglinux
 
 # Remove last }
 sed -i ':a;$!{N;ba;};s/\(.*\)}/\1/' /usr/lib/manjaro-tools/util-iso-image.sh
