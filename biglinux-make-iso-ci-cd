@@ -76,9 +76,6 @@ find -type f -exec sed -i '/xdg-su/d' {} +
 find -type f -exec sed -i '/xorg-utils/d' {} +
 find -type f -exec sed -i '/xorg-server-utils/d' {} +
 
-
-# PAREI AKI ##
-
 # Remove last }
 # sudo sed -i ':a;$!{N;ba;};s/\(.*\)}/\1/' /usr/lib/manjaro-tools/util-iso-image.sh
 sed -i ':a;$!{N;ba;};s/\(.*\)}/\1/' /usr/lib/manjaro-tools/util-iso-image.sh
