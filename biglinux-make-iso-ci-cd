@@ -9,6 +9,8 @@ sed -i '/manjaro2/d' iso-profiles/community/biglinux/profile.conf
 cp -Rf iso-profiles-biglinux/desktop-overlay/  iso-profiles/community/biglinux
 cp -Rf iso-profiles-biglinux/live-overlay/  iso-profiles/community/biglinux
 
+ls -lh
+
 # Remove Mhwd
 if [ -e "$HOME/iso-profiles-biglinux/Mhwd-remove" ]; then
     grep -v -f iso-profiles-biglinux/Mhwd-remove iso-profiles/shared/Packages-Mhwd  > iso-profiles/community/biglinux/Packages-Mhwd
@@ -67,6 +69,8 @@ fi
 find -type f -exec sed -i '/xdg-su/d' {} +
 find -type f -exec sed -i '/xorg-utils/d' {} +
 find -type f -exec sed -i '/xorg-server-utils/d' {} +
+
+ls -lh
 
 # Remove last }
 sed -i ':a;$!{N;ba;};s/\(.*\)}/\1/' /usr/lib/manjaro-tools/util-iso-image.sh
