@@ -2,18 +2,15 @@
 
 ## create profile biglinux ##
 mkdir -p iso-profiles/community/biglinux
-ls -lh iso-profiles/community/biglinux
 
 cp iso-profiles-biglinux/profile.conf  iso-profiles/community/biglinux/
-ls -lh iso-profiles/community/biglinux
-
 sed -i '/manjaro2/d' iso-profiles/community/biglinux/profile.conf
-ls -lh iso-profiles/community/biglinux
+
+cp iso-profiles-biglinux/pacman-default.conf iso-profiles/community/biglinux/
 
 cp -r iso-profiles-biglinux/desktop-overlay/  iso-profiles/community/biglinux/
-ls -lh iso-profiles/community/biglinux
-
 cp -r iso-profiles-biglinux/live-overlay/  iso-profiles/community/biglinux/
+
 ls -lh iso-profiles/community/biglinux
 
 # Remove Mhwd
