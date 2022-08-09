@@ -1,6 +1,6 @@
 #!/usr/bin
 
-cd ~
+# cd ~
 
 #git clone
 git clone https://gitlab.manjaro.org/profiles-and-settings/iso-profiles.git
@@ -8,61 +8,61 @@ git clone https://github.com/biglinux/iso-profiles-biglinux.git
 
 
 # Copy profile biglinux to profile folder
-cp -R ~/iso-profiles-biglinux ~/iso-profiles/community/biglinux
+cp -R iso-profiles-biglinux iso-profiles/community/biglinux
 
 # Remove Mhwd
 if [ -e "$HOME/iso-profiles-biglinux/Mhwd-remove" ]; then
-    grep -v -f ~/iso-profiles-biglinux/Mhwd-remove ~/iso-profiles/shared/Packages-Mhwd  > ~/iso-profiles/community/biglinux/Packages-Mhwd
+    grep -v -f iso-profiles-biglinux/Mhwd-remove iso-profiles/shared/Packages-Mhwd  > iso-profiles/community/biglinux/Packages-Mhwd
 else
-    cp -f ~/iso-profiles/shared/Packages-Mhwd ~/iso-profiles/community/biglinux/Packages-Mhwd
+    cp -f iso-profiles/shared/Packages-Mhwd iso-profiles/community/biglinux/Packages-Mhwd
 fi
 
 # Remove Root
 if [ -e "$HOME/iso-profiles-biglinux/Root-remove" ]; then
-    grep -v -f ~/iso-profiles-biglinux/Root-remove ~/iso-profiles/shared/Packages-Root  > ~/iso-profiles/community/biglinux/Packages-Root
+    grep -v -f iso-profiles-biglinux/Root-remove iso-profiles/shared/Packages-Root  > iso-profiles/community/biglinux/Packages-Root
 else
-    cp -f ~/iso-profiles/shared/Packages-Root ~/iso-profiles/community/biglinux/Packages-Root
+    cp -f iso-profiles/shared/Packages-Root iso-profiles/community/biglinux/Packages-Root
 fi
 
 # Remove Live
 if [ -e "$HOME/iso-profiles-biglinux/Live-remove" ]; then
-    grep -v -f ~/iso-profiles-biglinux/Live-remove ~/iso-profiles/shared/Packages-Live  > ~/iso-profiles/community/biglinux/Packages-Live
+    grep -v -f iso-profiles-biglinux/Live-remove iso-profiles/shared/Packages-Live  > iso-profiles/community/biglinux/Packages-Live
 else
-    cp -f ~/iso-profiles/shared/Packages-Live ~/iso-profiles/community/biglinux/Packages-Live
+    cp -f iso-profiles/shared/Packages-Live iso-profiles/community/biglinux/Packages-Live
 fi
 
 # Remove Desktop
 if [ -e "$HOME/iso-profiles-biglinux/Desktop-remove" ]; then
-    grep -v -f ~/iso-profiles-biglinux/Desktop-remove ~/iso-profiles/shared/Packages-Desktop  > ~/iso-profiles/community/biglinux/Packages-Desktop
+    grep -v -f iso-profiles-biglinux/Desktop-remove iso-profiles/shared/Packages-Desktop  > iso-profiles/community/biglinux/Packages-Desktop
 else
-    cp -f ~/iso-profiles/shared/Packages-Desktop ~/iso-profiles/community/biglinux/Packages-Desktop
+    cp -f iso-profiles/shared/Packages-Desktop iso-profiles/community/biglinux/Packages-Desktop
 fi
 
 # Add Mhwd
 if [ -e "$HOME/iso-profiles-biglinux/Mhwd-add" ]; then
-    cat ~/iso-profiles-biglinux/Mhwd-add >> ~/iso-profiles/community/biglinux/Packages-Mhwd
+    cat iso-profiles-biglinux/Mhwd-add >> iso-profiles/community/biglinux/Packages-Mhwd
 fi
 
 # Add Root
 if [ -e "$HOME/iso-profiles-biglinux/Root-add" ]; then
-    cat ~/iso-profiles-biglinux/Root-add >> ~/iso-profiles/community/biglinux/Packages-Root
+    cat iso-profiles-biglinux/Root-add >> iso-profiles/community/biglinux/Packages-Root
 fi
 
 # use mesa-amber ?
 if [ "$3" = "amber" ]; then
     echo 'mesa-amber
-lib32-mesa-amber' >> ~/iso-profiles/community/biglinux/Packages-Root
+lib32-mesa-amber' >> iso-profiles/community/biglinux/Packages-Root
 fi
 
 # Add Live
 if [ -e "$HOME/iso-profiles-biglinux/Live-add" ]; then
-    echo '' >> ~/iso-profiles/community/biglinux/Packages-Live
-    cat ~/iso-profiles-biglinux/Live-add >> ~/iso-profiles/community/biglinux/Packages-Live
+    echo '' >> iso-profiles/community/biglinux/Packages-Live
+    cat iso-profiles-biglinux/Live-add >> iso-profiles/community/biglinux/Packages-Live
 fi
 
 # Add Desktop
 if [ -e "$HOME/iso-profiles-biglinux/Desktop-add" ]; then
-    cat ~/iso-profiles-biglinux/Desktop-add > ~/iso-profiles/community/biglinux/Packages-Desktop
+    cat iso-profiles-biglinux/Desktop-add > iso-profiles/community/biglinux/Packages-Desktop
 fi
 
 # Remove last }
