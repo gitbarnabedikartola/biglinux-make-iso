@@ -7,6 +7,7 @@
 #git clone https://github.com/biglinux/iso-profiles-biglinux.git
 
 
+
 # Copy profile biglinux to profile folder
 cp -R iso-profiles-biglinux iso-profiles/community/biglinux
 
@@ -66,7 +67,8 @@ if [ -e "$HOME/iso-profiles-biglinux/Desktop-add" ]; then
 fi
 
 # Remove last }
-sudo sed -i ':a;$!{N;ba;};s/\(.*\)}/\1/' /usr/lib/manjaro-tools/util-iso-image.sh
+# sudo sed -i ':a;$!{N;ba;};s/\(.*\)}/\1/' /usr/lib/manjaro-tools/util-iso-image.sh
+sed -i ':a;$!{N;ba;};s/\(.*\)}/\1/' /usr/lib/manjaro-tools/util-iso-image.sh
 
 # adicionar ao arquivo
 
@@ -130,21 +132,27 @@ echo '  #BigLinux clean
             rm -Rf $path/Volna
         fi
 
-        }' | sudo tee -a /usr/lib/manjaro-tools/util-iso-image.sh
+         }' | tee -a /usr/lib/manjaro-tools/util-iso-image.sh
+#         }' | sudo tee -a /usr/lib/manjaro-tools/util-iso-image.sh
 
 
 # Disable remove pkgs cache
-sudo sed -i 's|path=$1/var/lib/pacman/sync|path=$1/usr/share/man|'g /usr/lib/manjaro-tools/util-iso-image.sh
+# sudo sed -i 's|path=$1/var/lib/pacman/sync|path=$1/usr/share/man|'g /usr/lib/manjaro-tools/util-iso-image.sh
+sed -i 's|path=$1/var/lib/pacman/sync|path=$1/usr/share/man|'g /usr/lib/manjaro-tools/util-iso-image.sh
 
 # Change in scripts /usr/share/manjaro-tools
-sudo mkdir -p /usr/share/manjaro-tools/iso-profiles/shared/biglinux
-sudo cp -Rf iso-profiles/community/biglinux/ /usr/share/manjaro-tools/iso-profiles/shared/biglinux
+# sudo mkdir -p /usr/share/manjaro-tools/iso-profiles/shared/biglinux
+mkdir -p /usr/share/manjaro-tools/iso-profiles/shared/biglinux
+# sudo cp -Rf iso-profiles/community/biglinux/ /usr/share/manjaro-tools/iso-profiles/shared/biglinux
+cp -Rf iso-profiles/community/biglinux/ /usr/share/manjaro-tools/iso-profiles/shared/biglinux
 
 #bootsplash
-sudo sed -i 's|keyboard keymap|keyboard keymap bootsplash-biglinux|g' /usr/share/manjaro-tools/mkinitcpio.conf
+# sudo sed -i 's|keyboard keymap|keyboard keymap bootsplash-biglinux|g' /usr/share/manjaro-tools/mkinitcpio.conf
+sed -i 's|keyboard keymap|keyboard keymap bootsplash-biglinux|g' /usr/share/manjaro-tools/mkinitcpio.conf
 
 #repo biglinux
-sudo cp -f iso-profiles-biglinux/pacman-default.conf /usr/share/manjaro-tools/pacman-default.conf
+# sudo cp -f iso-profiles-biglinux/pacman-default.conf /usr/share/manjaro-tools/pacman-default.conf
+cp -f iso-profiles-biglinux/pacman-default.conf /usr/share/manjaro-tools/pacman-default.conf
 
 
 # buildiso -f -p biglinux -b stable -k linux515
