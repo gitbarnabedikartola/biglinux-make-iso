@@ -1,4 +1,7 @@
-#!/usr/bin
+#!/bin/bash
+
+exec 2> make-iso.log
+exec 1>&2
 
 ## create profile biglinux ##
 mkdir -p iso-profiles/community/biglinux
