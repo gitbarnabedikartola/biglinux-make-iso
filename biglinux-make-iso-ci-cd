@@ -162,5 +162,5 @@ cp -f iso-profiles-biglinux/pacman-default.conf /usr/share/manjaro-tools/pacman-
 
 # buildiso -f -p biglinux -b stable -k linux515
 
-echo "cabou de rodar biglinux-make-iso-ci-cd"
+#verificar pacote libreoffice-extension-vero, quem sabe empacotar
  
