@@ -20,7 +20,6 @@ sed -i '/manjaro2/d' iso-profiles/community/biglinux/profile.conf
 cp -Rf iso-profiles-biglinux/desktop-overlay/  iso-profiles/community/biglinux
 cp -Rf iso-profiles-biglinux/live-overlay/  iso-profiles/community/biglinux
 
-
 # Remove Mhwd
 if [ -e "$HOME/iso-profiles-biglinux/Mhwd-remove" ]; then
     grep -v -f iso-profiles-biglinux/Mhwd-remove iso-profiles/shared/Packages-Mhwd  > iso-profiles/community/biglinux/Packages-Mhwd
