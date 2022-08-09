@@ -1,0 +1,148 @@
+#!/usr/bin
+
+cd ~
+
+#git clone
+git clone https://gitlab.manjaro.org/profiles-and-settings/iso-profiles.git
+git clone https://github.com/biglinux/iso-profiles-biglinux.git
+
+
+# Copy profile biglinux to profile folder
+cp -R ~/iso-profiles-biglinux ~/iso-profiles/community/biglinux
+
+# Remove Mhwd
+if [ -e "$HOME/iso-profiles-biglinux/Mhwd-remove" ]; then
+    grep -v -f ~/iso-profiles-biglinux/Mhwd-remove ~/iso-profiles/shared/Packages-Mhwd  > ~/iso-profiles/community/biglinux/Packages-Mhwd
+else
+    cp -f ~/iso-profiles/shared/Packages-Mhwd ~/iso-profiles/community/biglinux/Packages-Mhwd
+fi
+
+# Remove Root
+if [ -e "$HOME/iso-profiles-biglinux/Root-remove" ]; then
+    grep -v -f ~/iso-profiles-biglinux/Root-remove ~/iso-profiles/shared/Packages-Root  > ~/iso-profiles/community/biglinux/Packages-Root
+else
+    cp -f ~/iso-profiles/shared/Packages-Root ~/iso-profiles/community/biglinux/Packages-Root
+fi
+
+# Remove Live
+if [ -e "$HOME/iso-profiles-biglinux/Live-remove" ]; then
+    grep -v -f ~/iso-profiles-biglinux/Live-remove ~/iso-profiles/shared/Packages-Live  > ~/iso-profiles/community/biglinux/Packages-Live
+else
+    cp -f ~/iso-profiles/shared/Packages-Live ~/iso-profiles/community/biglinux/Packages-Live
+fi
+
+# Remove Desktop
+if [ -e "$HOME/iso-profiles-biglinux/Desktop-remove" ]; then
+    grep -v -f ~/iso-profiles-biglinux/Desktop-remove ~/iso-profiles/shared/Packages-Desktop  > ~/iso-profiles/community/biglinux/Packages-Desktop
+else
+    cp -f ~/iso-profiles/shared/Packages-Desktop ~/iso-profiles/community/biglinux/Packages-Desktop
+fi
+
+# Add Mhwd
+if [ -e "$HOME/iso-profiles-biglinux/Mhwd-add" ]; then
+    cat ~/iso-profiles-biglinux/Mhwd-add >> ~/iso-profiles/community/biglinux/Packages-Mhwd
+fi
+
+# Add Root
+if [ -e "$HOME/iso-profiles-biglinux/Root-add" ]; then
+    cat ~/iso-profiles-biglinux/Root-add >> ~/iso-profiles/community/biglinux/Packages-Root
+fi
+
+# use mesa-amber ?
+if [ "$3" = "amber" ]; then
+    echo 'mesa-amber
+lib32-mesa-amber' >> ~/iso-profiles/community/biglinux/Packages-Root
+fi
+
+# Add Live
+if [ -e "$HOME/iso-profiles-biglinux/Live-add" ]; then
+    echo '' >> ~/iso-profiles/community/biglinux/Packages-Live
+    cat ~/iso-profiles-biglinux/Live-add >> ~/iso-profiles/community/biglinux/Packages-Live
+fi
+
+# Add Desktop
+if [ -e "$HOME/iso-profiles-biglinux/Desktop-add" ]; then
+    cat ~/iso-profiles-biglinux/Desktop-add > ~/iso-profiles/community/biglinux/Packages-Desktop
+fi
+
+# Remove last }
+sudo sed -i ':a;$!{N;ba;};s/\(.*\)}/\1/' /usr/lib/manjaro-tools/util-iso-image.sh
+
+# adicionar ao arquivo
+
+echo '  #BigLinux clean
+        path=$1/usr/share/doc
+        if [[ -d $path ]]; then
+            rm -Rf $path/* &> /dev/null
+        fi
+        
+        #BigLinux clean
+        path=$1/usr/share/man
+        if [[ -d $path ]]; then
+            rm -Rf $path/* &> /dev/null
+        fi
+        
+        #Clean LibreOffice
+        path=$1/usr/lib/libreoffice/share/config
+        if [[ -d $path ]]; then
+        rm -f $path/images_karasa_jaga* &> /dev/null
+        rm -f $path/images_elementary* &> /dev/null
+        rm -f $path/images_sukapura* &> /dev/null
+        rm -f $path/images_colibre_svg.zip &> /dev/null
+        rm -f $path/images_sifr_dark_svg.zip &> /dev/null
+        rm -f $path/images_sifr_svg.zip &> /dev/null
+        rm -f $path/images_breeze_dark_svg.zip &> /dev/null
+        rm -f $path/images_breeze_svg.zip &> /dev/null
+        fi
+
+        #Clean LibreOffice
+        path=$1/usr/share/wallpapers
+        if [[ -d $path ]]; then
+            rm -Rf $path/Altai
+            rm -Rf $path/BytheWater
+            rm -Rf $path/Cascade
+            rm -Rf $path/ColdRipple
+            rm -Rf $path/DarkestHour
+            rm -Rf $path/EveningGlow
+            rm -Rf $path/Flow
+            rm -Rf $path/FlyingKonqui
+            rm -Rf $path/IceCold
+            rm -Rf $path/Kokkini
+            rm -Rf $path/Next
+            rm -Rf $path/Opal
+            rm -Rf $path/Patak
+            rm -Rf $path/SafeLanding
+            rm -Rf $path/summer_1am
+            rm -Rf $path/Autumn
+            rm -Rf $path/Canopee
+            rm -Rf $path/Cluster
+            rm -Rf $path/ColorfulCups
+            rm -Rf $path/Elarun
+            rm -Rf $path/FallenLeaf
+            rm -Rf $path/Fluent
+            rm -Rf $path/Grey
+            rm -Rf $path/Kite
+            rm -Rf $path/MilkyWay
+            rm -Rf $path/OneStandsOut
+            rm -Rf $path/PastelHills
+            rm -Rf $path/Path
+            rm -Rf $path/Shell
+            rm -Rf $path/Volna
+        fi
+
+        }' | sudo tee -a /usr/lib/manjaro-tools/util-iso-image.sh
+
+
+# Disable remove pkgs cache
+sudo sed -i 's|path=$1/var/lib/pacman/sync|path=$1/usr/share/man|'g /usr/lib/manjaro-tools/util-iso-image.sh
+
+# Change in scripts /usr/share/manjaro-tools
+sudo cp -Rf $HOME/iso-profiles/community/biglinux/ /usr/share/manjaro-tools/iso-profiles/shared/biglinux
+
+#bootsplash
+sudo sed -i 's|keyboard keymap|keyboard keymap bootsplash-biglinux|g' /usr/share/manjaro-tools/mkinitcpio.conf
+
+#repo biglinux
+sudo cp -f ~/iso-profiles-biglinux/pacman-default.conf /usr/share/manjaro-tools/pacman-default.conf
+
+
