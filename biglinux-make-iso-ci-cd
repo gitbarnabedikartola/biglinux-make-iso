@@ -1,16 +1,5 @@
 #!/usr/bin
 
-# cd ~
-
-#git clone
-#git clone https://gitlab.manjaro.org/profiles-and-settings/iso-profiles.git
-#git clone https://github.com/biglinux/iso-profiles-biglinux.git
-
-
-
-# Copy profile biglinux to profile folder
-# cp -R iso-profiles-biglinux iso-profiles/community/biglinux
-
 ## create profile biglinux ##
 mkdir -p iso-profiles/community/biglinux
 
@@ -80,7 +69,6 @@ find -type f -exec sed -i '/xorg-utils/d' {} +
 find -type f -exec sed -i '/xorg-server-utils/d' {} +
 
 # Remove last }
-# sudo sed -i ':a;$!{N;ba;};s/\(.*\)}/\1/' /usr/lib/manjaro-tools/util-iso-image.sh
 sed -i ':a;$!{N;ba;};s/\(.*\)}/\1/' /usr/lib/manjaro-tools/util-iso-image.sh
 
 # adicionar ao arquivo
@@ -146,29 +134,22 @@ echo '  #BigLinux clean
         fi
 
          }' | tee -a /usr/lib/manjaro-tools/util-iso-image.sh
-#         }' | sudo tee -a /usr/lib/manjaro-tools/util-iso-image.sh
-
 
 # Disable remove pkgs cache
-# sudo sed -i 's|path=$1/var/lib/pacman/sync|path=$1/usr/share/man|'g /usr/lib/manjaro-tools/util-iso-image.sh
 sed -i 's|path=$1/var/lib/pacman/sync|path=$1/usr/share/man|'g /usr/lib/manjaro-tools/util-iso-image.sh
 
 # Change in scripts /usr/share/manjaro-tools
-# sudo mkdir -p /usr/share/manjaro-tools/iso-profiles/shared/biglinux
 mkdir -p /usr/share/manjaro-tools/iso-profiles/shared/biglinux
-# sudo cp -Rf iso-profiles/community/biglinux/ /usr/share/manjaro-tools/iso-profiles/shared/biglinux
 cp -Rf iso-profiles/community/biglinux/ /usr/share/manjaro-tools/iso-profiles/shared
 
 #bootsplash
-# sudo sed -i 's|keyboard keymap|keyboard keymap bootsplash-biglinux|g' /usr/share/manjaro-tools/mkinitcpio.conf
 sed -i 's|keyboard keymap|keyboard keymap bootsplash-biglinux|g' /usr/share/manjaro-tools/mkinitcpio.conf
 
 #repo biglinux
-# sudo cp -f iso-profiles-biglinux/pacman-default.conf /usr/share/manjaro-tools/pacman-default.conf
 cp -f iso-profiles-biglinux/pacman-default.conf /usr/share/manjaro-tools/pacman-default.conf
 
 
 # buildiso -f -p biglinux -b stable -k linux515
 
-
+echo "cabou de rodar biglinux-make-iso-ci-cd"
  
