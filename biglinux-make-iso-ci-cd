@@ -15,7 +15,7 @@
 mkdir -p iso-profiles/community/biglinux
 
 cp iso-profiles-biglinux/profile.conf  iso-profiles/community/biglinux/
-sed '/manjaro2/d' iso-profiles/community/biglinux/profile.conf
+sed -i '/manjaro2/d' iso-profiles/community/biglinux/profile.conf
 
 # Remove Mhwd
 if [ -e "$HOME/iso-profiles-biglinux/Mhwd-remove" ]; then
@@ -70,9 +70,9 @@ fi
 # Add Desktop
 if [ -e "$HOME/iso-profiles-biglinux/Desktop-add" ]; then
     cat iso-profiles-biglinux/Desktop-add > iso-profiles/community/biglinux/Packages-Desktop
-#     echo "xdg-su" iso-profiles/community/biglinux/Packages-Desktop
-#     echo "xorg-server-utils" iso-profiles/community/biglinux/Packages-Desktop
-#     echo "xorg-utils" iso-profiles/community/biglinux/Packages-Desktop
+    echo "xdg-su" iso-profiles/community/biglinux/Packages-Desktop
+    echo "xorg-server-utils" iso-profiles/community/biglinux/Packages-Desktop
+    echo "xorg-utils" iso-profiles/community/biglinux/Packages-Desktop
 fi
 
 
