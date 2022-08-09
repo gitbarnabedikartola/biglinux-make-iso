@@ -17,6 +17,10 @@ mkdir -p iso-profiles/community/biglinux
 cp iso-profiles-biglinux/profile.conf  iso-profiles/community/biglinux/
 sed -i '/manjaro2/d' iso-profiles/community/biglinux/profile.conf
 
+cp -Rf iso-profiles-biglinux/desktop-overlay/  iso-profiles/community/biglinux
+cp -Rf iso-profiles-biglinux/live-overlay/  iso-profiles/community/biglinux
+
+
 # Remove Mhwd
 if [ -e "$HOME/iso-profiles-biglinux/Mhwd-remove" ]; then
     grep -v -f iso-profiles-biglinux/Mhwd-remove iso-profiles/shared/Packages-Mhwd  > iso-profiles/community/biglinux/Packages-Mhwd
@@ -154,7 +158,7 @@ sed -i 's|path=$1/var/lib/pacman/sync|path=$1/usr/share/man|'g /usr/lib/manjaro-
 # sudo mkdir -p /usr/share/manjaro-tools/iso-profiles/shared/biglinux
 mkdir -p /usr/share/manjaro-tools/iso-profiles/shared/biglinux
 # sudo cp -Rf iso-profiles/community/biglinux/ /usr/share/manjaro-tools/iso-profiles/shared/biglinux
-cp -Rf iso-profiles/community/biglinux/ /usr/share/manjaro-tools/iso-profiles/shared/biglinux
+cp -Rf iso-profiles/community/biglinux/ /usr/share/manjaro-tools/iso-profiles/shared
 
 #bootsplash
 # sudo sed -i 's|keyboard keymap|keyboard keymap bootsplash-biglinux|g' /usr/share/manjaro-tools/mkinitcpio.conf
