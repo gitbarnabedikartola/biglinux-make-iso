@@ -7,9 +7,10 @@ exec 1>&2
 mkdir -p iso-profiles/community/biglinux
 
 cp iso-profiles-biglinux/profile.conf  iso-profiles/community/biglinux/
-sed -i '/manjaro2/d' iso-profiles/community/biglinux/profile.conf
+sed -i '/manjaro2/d'  iso-profiles/community/biglinux/profile.conf
 
-cp iso-profiles-biglinux/pacman-default.conf iso-profiles/community/biglinux/
+cp iso-profiles-biglinux/pacman-default.conf  iso-profiles/community/biglinux/
+cp iso-profiles-biglinux/user-repos.conf  iso-profiles/community/biglinux/
 
 cp -r iso-profiles-biglinux/desktop-overlay/  iso-profiles/community/biglinux/
 cp -r iso-profiles-biglinux/live-overlay/  iso-profiles/community/biglinux/
